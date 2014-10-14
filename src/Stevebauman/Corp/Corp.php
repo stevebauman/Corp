@@ -88,10 +88,10 @@ class Corp {
 	
 
 	/**
-	 * Grabs computer information with inputted name
+	 * Returns a computer object from an adldap array
 	 *
 	 * @param  string  $name
-	 * @return mixed (boolean OR array)
+	 * @return \Stevebauman\Corp\Objects\Computer
 	 */
 	public function computer($name){
             $computer = new Computer($this->adldap->computer()->info($name));
@@ -100,7 +100,7 @@ class Corp {
 	}
         
         /**
-         * Returns a collection of computers
+         * Returns a collection of computer objects
          * 
          * @return \Illuminate\Support\Collection
          */
@@ -141,7 +141,7 @@ class Corp {
          * equals the name of the printer, it is returned
          * 
          * @param type $name
-         * @return boolean
+         * @return \Stevebauman\Corp\Objects\Printer
          */
         public function printer($name){
             $printers = $this->printers();
@@ -158,7 +158,7 @@ class Corp {
         }
         
         /**
-         * Returns a collection of printers
+         * Returns a collection of printer objects
          * 
          * @return \Illuminate\Support\Collection
          */
@@ -206,7 +206,7 @@ class Corp {
         /**
          * Returns current adLDAP object
          * 
-         * @return adLDAP\adLDAP
+         * @return adLDAP/adLDAP
          */
         public function adldap(){
             return $this->adldap;
