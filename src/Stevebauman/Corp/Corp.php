@@ -22,8 +22,15 @@ class Corp {
 	private $config;
 	
 	public function __construct(Repository $config){
+            
+            /*
+             * Create Config object
+             */
             $this->config = $config;
-            // Create an adldap instance
+            
+            /*
+             * Create AdLDAP object
+             */
             $this->adldap = new adLDAP($this->config->get('corp::adldap_config'));
 	}
 	
