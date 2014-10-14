@@ -27,49 +27,64 @@ Authenticate an LDAP User
 
 Get user information
 
-	Corp::userInfo($username); //Returns large array of user information (array)
+	$user = Corp::user($username); //Returns a user object
 	
-Get user email
+        echo $user->username;
+    
+        echo $user->name;
 
-	Corp::userEmail($username); //Returns email only (string)
-	
-Get a user's full name
+        echo $user->email
 
-	Corp::userFullName($username); //Returns name only (string)
+        echo $user->group;
 
-Get a user's group name
+        echo $user->type;
 
-	Corp::userGroup($username); //Returns group name only (string)
+        print_r($user->dn); //Returns distinguished name array
 
 Get an entire user list
 
-	Corp::userList(); //Returns a large array with each user along with their user information (array)
+	$users = Corp::users(); //Returns a laravel collection of user objects of all users on current ldap connection
+        
+        //Usage for laravel select
+        Form::select('users', $users->lists('username', 'name'));
 
-Get a user list for laravel select list (user ID is value of the select, user's full name is visible portion of the select)
-
-	Corp::userList(); //Returns an array with the users ID and full name (array)
-	
 Get a computer's information
 
-	Corp::computer($computer_name); //Returns a large array containing Computer group, type, OS, OS version (service pack), OS build (ex. 6.1), and Hostname (array)
-	
-Check if a computer exists
+	$computer = Corp::computer($computer);
+        
+        echo $computer->name;
 
-	Corp::computerExists($computer_name); //Returns true/false (boolean)
+        echo $computer->os->name; // ex. Windows 7 Professional
+        echo $computer->os->version; // ex. 6.1 (7601)
+        echo $computer->os->service_pack; // ex. Service Pack 1
+        
+        echo $computer->type;
+
+        echo $computer->group;
+
+        echo $computer->host_name;
+
+        print_r($computer->dn);
+	
 	
 Get a list of all computers
 	
-	Corp::allComputers(); //Returns a large array containing the computer name, type, and group. Also returns printers as well
+	$computers = Corp::computers();
 	
+        //Usage for laravel select
+        Form::select('computers', $computers->lists('name', 'name'));
+
 ##Authenticating with laravel's Auth driver but using LDAP
 
 	if (Corp::auth($username, $password)) { //If Passes LDAP Auth
 		
-		if(!User::where('username', '=', $username)->first()){ // If web user profile does not exist, create one	
+		if(!User::where('username', '=', $username)->first()){ // If web user profile does not exist, create one
+                                $corpUser = Corp::user($username);
+
 				$user = new User;
 				$user->username = $username;
-				$user->email = Corp::userEmail($username);
-				$user->fullname = Corp::userFullName($username);
+				$user->email = $corpUser->email;
+				$user->fullname = $corpUser->name;
 				$user->password = Hash::make($password);
 				$user->save();
 				
