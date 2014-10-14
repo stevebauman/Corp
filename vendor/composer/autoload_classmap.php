@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Stevebauman\\Corp\\Corp' => $baseDir . '/src/Stevebauman/Corp/Corp.php',
     'Stevebauman\\Corp\\CorpServiceProvider' => $baseDir . '/src/Stevebauman/Corp/CorpServiceProvider.php',
+    'Stevebauman\\Corp\\Facades\\Corp' => $baseDir . '/src/Stevebauman/Corp/Facades/Corp.php',
     'Stevebauman\\Corp\\Objects\\Computer' => $baseDir . '/src/Stevebauman/Corp/Objects/Computer.php',
     'Stevebauman\\Corp\\Objects\\ComputerOs' => $baseDir . '/src/Stevebauman/Corp/Objects/ComputerOs.php',
     'Stevebauman\\Corp\\Objects\\Printer' => $baseDir . '/src/Stevebauman/Corp/Objects/Printer.php',
