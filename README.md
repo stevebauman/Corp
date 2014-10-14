@@ -32,6 +32,9 @@ You can access all adldap functions by using:
 Example:
 
     Corp::adldap()->group()->info($groupName);
+    Corp::adldap()->user()->info($username);
+    Corp::adldap()->user()->inGroup($username);
+    Corp::adldap()->user()->modify('admin', array('telephone'=>'555 555-5555'));
 
 
 ####Authenticate an LDAP User
