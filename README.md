@@ -36,6 +36,7 @@ Example:
     Corp::adldap()->user()->inGroup($username);
     Corp::adldap()->user()->modify('admin', array('telephone'=>'555 555-5555'));
 
+All functions available [here](https://github.com/adldap/adLDAP/wiki/adLDAP-Developer-API-Reference#functions)
 
 ####Authenticate an LDAP User
 
