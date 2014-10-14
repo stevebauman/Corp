@@ -88,7 +88,8 @@ class Corp {
 	
 
 	/**
-	 * Returns a computer object from an adldap array
+	 * Returns a computer object from an adldap array with the specified
+         * computer name
 	 *
 	 * @param  string  $name
 	 * @return \Stevebauman\Corp\Objects\Computer
