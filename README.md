@@ -1,6 +1,5 @@
 #Corp
-An AdLDAP Helper for Larvel 4/5
-
+An AdLDAP Helper Package for Larvel 4/5
 
 ##Installation
 Add Location to your `composer.json` file.
@@ -38,13 +37,20 @@ Example:
 
 All functions available [here](https://github.com/adldap/adLDAP/wiki/adLDAP-Developer-API-Reference#functions).
 
+###Change User Password through standard AdLDAP (SSL or TLS required, must enable in package config file)
+    Corp::adldap()->user()->password('username', 'password');
+
+###Change User Password through COM (Windows and COM ext required, must enable COM in package config file)
+    $user = Corp::user('admin');
+    $user->changePassword('password123'); //Returns true/false
+
 ####Authenticate an LDAP User
 
-    Corp::auth($username, $password); // Returns true/false (boolean)
+    Corp::auth('username', 'password'); // Returns true/false (boolean)
 
 ####Get user information
 
-    $user = Corp::user($username); // Returns a user object
+    $user = Corp::user('username'); // Returns a user object
 
     echo $user->username;
 
@@ -67,7 +73,7 @@ All functions available [here](https://github.com/adldap/adLDAP/wiki/adLDAP-Deve
 
 ####Get a computer's information
 
-    $computer = Corp::computer($computer); // Returns a computer object
+    $computer = Corp::computer('computer name'); // Returns a computer object
 
     echo $computer->name;
 

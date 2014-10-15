@@ -42,7 +42,7 @@ return array(
 			),
                     
                         /*
-                         * Can either be AdLDAP or COM, if using COM then COM needs
+                         * Can either be Adldap or COM, if using COM then COM needs
                          * to be enabled as a PHP extension on the server
                          */
                         'modification_service' => 'COM',
