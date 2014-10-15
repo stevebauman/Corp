@@ -2,6 +2,9 @@
 
 namespace Stevebauman\Corp\Objects;
 
+use Stevebauman\Corp\Services\UserComService;
+use Illuminate\Support\Facades\Config;
+
 class User {
     
     public $username = '';
@@ -16,9 +19,21 @@ class User {
     
     public $dn = array();
     
+    public $dn_string = '';
+    
+    /*
+     * Holds the service to change user information
+     */
+    private $service;
+    
     public function __construct(array $user)
     {
         $this->assign($user);
+        
+        if(Config::get('corp::options.users.modification_service' === 'COM')){
+            $this->service = new UserComService($this);
+        }
+        
     }
     
     /**
@@ -32,6 +47,7 @@ class User {
         if(array_key_exists('dn', $user[0]))
         {
             $this->setDn(ldap_explode_dn($user[0]['dn'], 1));
+            $this->setDnString($user[0]['dn']);
         }
         
         if(array_key_exists('samaccountname', $user[0]))
@@ -89,6 +105,14 @@ class User {
     public function setDn($dn)
     {
         $this->dn = $dn;
+    }
+    
+    public function setDnString($dn){
+        $this->dn_string = $dn;
+    }
+    
+    public function changePassword($password){
+        return $this->service->password($password);
     }
     
 }

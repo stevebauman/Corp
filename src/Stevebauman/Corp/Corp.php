@@ -21,6 +21,11 @@ class Corp {
          */
 	private $config;
 	
+        /*
+         * Holds COM object if COM is enabled
+         */
+        private $com;
+
 	public function __construct(Repository $config){
             
             /*
@@ -32,6 +37,7 @@ class Corp {
              * Create AdLDAP object
              */
             $this->adldap = new adLDAP($this->config->get('corp::adldap_config'));
+            
 	}
 	
 	/**
@@ -41,10 +47,9 @@ class Corp {
 	 * @param  string $username, $password
 	 * @return boolean
 	 */
-	public function auth($username, $password){
-		if($this->adldap->user()->authenticate($username, $password)){
-                    return true;
-                } return false;
+	public function auth($username, $password)
+        {
+            return $this->adldap->user()->authenticate($username, $password);
 	}
         
         /**
@@ -54,7 +59,13 @@ class Corp {
          * @return \Stevebauman\Corp\Objects\User
          */
         public function user($username){
-            return new User($this->adldap->user()->info($username));
+            $user = $this->adldap->user()->info($username);
+            
+            if($user) {
+                return new User($user);
+            } else {
+                return false;
+            }
         }
         
         /**
@@ -62,7 +73,8 @@ class Corp {
          * 
          * @return \Illuminate\Support\Collection
          */
-        public function users(){
+        public function users()
+        {
             $adldapUsers = $this->adldap->user()->all();
             
             $users = array();
@@ -94,7 +106,8 @@ class Corp {
 	 * @param  string  $name
 	 * @return \Stevebauman\Corp\Objects\Computer
 	 */
-	public function computer($name){
+	public function computer($name)
+        {
             $computer = new Computer($this->adldap->computer()->info($name));
             
             return $computer;
@@ -105,7 +118,8 @@ class Corp {
          * 
          * @return \Illuminate\Support\Collection
          */
-        public function computers(){
+        public function computers()
+        {
             $folders = $this->folder($this->config->get('corp::options.computers.folder'));
             
             $computers = array();
@@ -144,7 +158,8 @@ class Corp {
          * @param type $name
          * @return \Stevebauman\Corp\Objects\Printer
          */
-        public function printer($name){
+        public function printer($name)
+        {
             $printers = $this->printers();
             
             foreach($printers as $printer)
@@ -163,7 +178,8 @@ class Corp {
          * 
          * @return \Illuminate\Support\Collection
          */
-        public function printers(){
+        public function printers()
+        {
             $folders = $this->folder($this->config->get('corp::options.computers.folder'));
             
             $printers = array();
@@ -200,7 +216,8 @@ class Corp {
          * @param type $folder
          * @return type
          */
-        public function folder($folder){
+        public function folder($folder)
+        {
             return $this->adldap->folder()->listing($folder, adLDAP::ADLDAP_FOLDER, true);
         }
         
@@ -209,7 +226,8 @@ class Corp {
          * 
          * @return adLDAP/adLDAP
          */
-        public function adldap(){
+        public function adldap()
+        {
             return $this->adldap;
         }
 }
