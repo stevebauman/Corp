@@ -37,10 +37,10 @@ Example:
 
 All functions available [here](https://github.com/adldap/adLDAP/wiki/adLDAP-Developer-API-Reference#functions).
 
-###Change User Password through standard AdLDAP (SSL or TLS required, must enable in package config file)
+####Change User Password through standard AdLDAP (SSL or TLS required, must enable in package config file)
     Corp::adldap()->user()->password('username', 'password');
 
-###Change User Password through COM (Windows and COM ext required, must enable COM in package config file)
+####Change User Password through COM (Windows and COM ext required, must enable COM in package config file)
     $user = Corp::user('admin');
     $user->changePassword('password123'); //Returns true/false
 
