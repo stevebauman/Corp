@@ -34,10 +34,18 @@ return array(
 				'Service Accounts', 
 				'Microsoft Exchange System Objects',
 			),
-			// You can also exclude specific groups from your user results
+			/*
+                         *  You can also exclude specific groups from your user results
+                         */
 			'excluded_user_groups' => array(
 				'corp'
 			),
+                    
+                        /*
+                         * Can either be AdLDAP or COM, if using COM then COM needs
+                         * to be enabled as a PHP extension on the server
+                         */
+                        'modification_service' => 'COM',
 		),
 
 		'computers' => array(
