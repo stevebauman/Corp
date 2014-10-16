@@ -46,7 +46,7 @@ class UserComService {
     /**
      * Sets an LDAP user password using COM
      * 
-     * @param type $password
+     * @param string $password
      * @return boolean
      */
     public function password($username, $password)
@@ -57,25 +57,74 @@ class UserComService {
         $corpUser = $this->getUser($username);
         
         /*
-         * Get the distiguished name from the user object
-         */
-        $userDn = $corpUser->dn_string;
-        
-        /*
          * Get the DS object
          */
-        $user = $this->com->OpenDSObject("LDAP://".$this->server."/".$userDn, $this->adminUser, $this->adminPassword, 1);
-
+        $user = $this->getDsObject($corpUser->dn_string);
+        
         /*
          * Set the password
          */
         $user->SetPassword($password);
         
+        /*
+         * Save Object
+         */
+        $user->SetInfo();
+        
         return true;
         
     }
     
-    private function getUser($username){
+    /**
+     * Activates an LDAP account using COM
+     * 
+     * @param string $username
+     * @param string $password
+     * @return boolean
+     */
+    public function activate($username)
+    {
+        /*
+         * Get the user
+         */
+        $corpUser = $this->getUser($username);
+        
+        /*
+         * Get the DS object
+         */
+        $user = $this->getDsObject($corpUser->dn_string);
+        
+        /*
+         * Enable the account
+         */
+        $user->AccountDisabled = false;
+        
+        /*
+         * Save Object
+         */
+        $user->SetInfo();
+        
+        return true;
+    }
+    
+    /**
+     * Returns a COM object using the specified user distinguished name
+     * 
+     * @param string $userDn
+     * @return variant COM Object
+     */
+    private function getDsObject($userDn)
+    {
+        return $this->com->OpenDSObject("LDAP://".$this->server."/".$userDn, $this->adminUser, $this->adminPassword, 1);
+    }
+    
+    /**
+     * 
+     * @param string $username
+     * @return type 
+     */
+    private function getUser($username)
+    {
         return Corp::user($username);
     }
     
