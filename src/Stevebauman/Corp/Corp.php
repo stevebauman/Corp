@@ -6,6 +6,7 @@ use adLDAP\adLDAP;
 use Stevebauman\Corp\Objects\User;
 use Stevebauman\Corp\Objects\Computer;
 use Stevebauman\Corp\Objects\Printer;
+use Stevebauman\Corp\Services\ComService;
 use Illuminate\Support\Collection;
 use Illuminate\Config\Repository;
 
@@ -38,6 +39,11 @@ class Corp {
              */
             $this->adldap = new adLDAP($this->config->get('corp::adldap_config'));
             
+            
+            /*
+             * Create ComService object
+             */
+            $this->com = new ComService($this);
 	}
 	
 	/**
@@ -229,6 +235,11 @@ class Corp {
         public function adldap()
         {
             return $this->adldap;
+        }
+        
+        public function com()
+        {
+            return $this->com;
         }
 }
 

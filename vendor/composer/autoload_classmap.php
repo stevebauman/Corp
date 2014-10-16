@@ -13,4 +13,6 @@ return array(
     'Stevebauman\\Corp\\Objects\\ComputerOs' => $baseDir . '/src/Stevebauman/Corp/Objects/ComputerOs.php',
     'Stevebauman\\Corp\\Objects\\Printer' => $baseDir . '/src/Stevebauman/Corp/Objects/Printer.php',
     'Stevebauman\\Corp\\Objects\\User' => $baseDir . '/src/Stevebauman/Corp/Objects/User.php',
+    'Stevebauman\\Corp\\Services\\ComService' => $baseDir . '/src/Stevebauman/Corp/Services/ComService.php',
+    'Stevebauman\\Corp\\Services\\UserComService' => $baseDir . '/src/Stevebauman/Corp/Services/UserComService.php',
 );

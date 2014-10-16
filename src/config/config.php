@@ -41,11 +41,6 @@ return array(
 				'corp'
 			),
                     
-                        /*
-                         * Can either be Adldap or COM, if using COM then COM needs
-                         * to be enabled as a PHP extension on the server
-                         */
-                        'modification_service' => 'COM',
 		),
 
 		'computers' => array(

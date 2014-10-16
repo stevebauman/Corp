@@ -4,19 +4,43 @@ namespace Stevebauman\Corp\Services;
 
 use COM;
 use Illuminate\Support\Facades\Config;
-use Stevebauman\Corp\Objects\User;
-use Stevebauman\Corp\Services\ServiceInterface;
+use Stevebauman\Corp\Facades\Corp;
 
-class UserComService implements ServiceInterface {
+class UserComService {
     
-    private $user;
-    
+    /*
+     * Holds the COM object
+     */
     private $com;
     
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-        $this->com = new COM('LDAP:');
+    /*
+     * Holds the server name
+     */
+    private $server = '';
+    
+    /*
+     * Holds the administrator username
+     */
+    private $adminUser = '';
+    
+    /*
+     * Holds the administrator password
+     */
+    private $adminPassword = '';
+    
+    public function __construct()
+    {   
+        /*
+         * Construct a new COM object
+         */
+        $this->com = new COM("LDAP:");
+
+        /*
+         * Get configuration details
+         */
+        $this->server           = Config::get('corp::adldap_config.domain_controllers.0');
+        $this->adminUser        = Config::get('corp::adldap_config.admin_username');
+        $this->adminPassword    = Config::get('corp::adldap_config.admin_password');
     }
     
     /**
@@ -25,32 +49,34 @@ class UserComService implements ServiceInterface {
      * @param type $password
      * @return boolean
      */
-    public function password($password)
+    public function password($username, $password)
     {
+        /*
+         * Get the user
+         */
+        $corpUser = $this->getUser($username);
         
         /*
-         * Grab the configuration values
+         * Get the distiguished name from the user object
          */
-        $server         = Config::get('corp::adldap_config.domain_controllers.0');
-        $adminUser      = Config::get('corp::adldap_config.admin_username');
-        $adminPassword  = Config::get('corp::adldap_config.admin_password');
-        
-        /*
-         * Grab the distiguished name from the user object
-         */
-        $userDn = $this->user->dn_string;
+        $userDn = $corpUser->dn_string;
         
         /*
          * Get the DS object
          */
-        $user = $this->com->OpenDSObject("LDAP://".$server."/".$userDn, $adminUser, $adminPassword, 1);
-        
+        $user = $this->com->OpenDSObject("LDAP://".$this->server."/".$userDn, $this->adminUser, $this->adminPassword, 1);
+
         /*
          * Set the password
          */
         $user->SetPassword($password);
         
-        return true; 
+        return true;
+        
+    }
+    
+    private function getUser($username){
+        return Corp::user($username);
     }
     
 }
