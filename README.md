@@ -43,6 +43,9 @@ All functions available [here](https://github.com/adldap/adLDAP/wiki/adLDAP-Deve
 ####Change User Password through COM (Windows and COM ext required)
     Corp::com()->user()->password('username', 'password123'); //Returns boolean
 
+####Activate a User through COM
+    Corp::com()->user()->activate('username'); //Returns boolean
+
 ####Authenticate an LDAP User
 
     Corp::auth('username', 'password'); // Returns true/false (boolean)
