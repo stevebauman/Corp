@@ -1,10 +1,16 @@
 #Corp
+
+[![Latest Stable Version](https://poser.pugx.org/stevebauman/corp/v/stable.svg)](https://packagist.org/packages/stevebauman/corp) 
+[![Total Downloads](https://poser.pugx.org/stevebauman/corp/downloads.svg)](https://packagist.org/packages/stevebauman/corp) 
+[![Latest Unstable Version](https://poser.pugx.org/stevebauman/corp/v/unstable.svg)](https://packagist.org/packages/stevebauman/corp) 
+[![License](https://poser.pugx.org/stevebauman/corp/license.svg)](https://packagist.org/packages/stevebauman/corp)
+
 An AdLDAP Helper Package for Larvel 4/5
 
 ##Installation
-Add Location to your `composer.json` file.
+Add Corp to your `composer.json` file.
 
-	"stevebauman/corp": "dev-master"
+	"stevebauman/corp": "1.*"
 
 Then run "composer update" on your project source.
 
