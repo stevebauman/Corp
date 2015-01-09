@@ -1,6 +1,6 @@
 #Corp
 
-[![Travis CI](https://travis-ci.org/stevebauman/corp.svg?branch=master)](https://travis-ci.org/stevebauman/corp)
+[![Travis CI](https://travis-ci.org/stevebauman/Corp.svg?branch=master)](https://travis-ci.org/stevebauman/Corp)
 [![Code Climate](https://codeclimate.com/github/stevebauman/Corp/badges/gpa.svg)](https://codeclimate.com/github/stevebauman/Corp)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/stevebauman/Corp/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/stevebauman/Corp/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/stevebauman/corp/v/stable.svg)](https://packagist.org/packages/stevebauman/corp) 
