@@ -1,5 +1,6 @@
 #Corp
 
+[![Code Climate](https://codeclimate.com/github/stevebauman/Corp/badges/gpa.svg)](https://codeclimate.com/github/stevebauman/Corp)
 [![Latest Stable Version](https://poser.pugx.org/stevebauman/corp/v/stable.svg)](https://packagist.org/packages/stevebauman/corp) 
 [![Total Downloads](https://poser.pugx.org/stevebauman/corp/downloads.svg)](https://packagist.org/packages/stevebauman/corp) 
 [![Latest Unstable Version](https://poser.pugx.org/stevebauman/corp/v/unstable.svg)](https://packagist.org/packages/stevebauman/corp) 
