@@ -1,5 +1,6 @@
 #Corp
 
+[![Travis CI](https://travis-ci.org/stevebauman/corp.svg?branch=master)](https://travis-ci.org/stevebauman/corp)
 [![Code Climate](https://codeclimate.com/github/stevebauman/Corp/badges/gpa.svg)](https://codeclimate.com/github/stevebauman/Corp)
 [![Latest Stable Version](https://poser.pugx.org/stevebauman/corp/v/stable.svg)](https://packagist.org/packages/stevebauman/corp) 
 [![Total Downloads](https://poser.pugx.org/stevebauman/corp/downloads.svg)](https://packagist.org/packages/stevebauman/corp) 
