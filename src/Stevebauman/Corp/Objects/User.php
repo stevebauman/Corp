@@ -29,13 +29,13 @@ class User {
     {
         $this->assign($user);
         
-        $this->service = new UserComService($this);
+        $this->service = new UserComService;
     }
     
     /**
      * Assigns object variables from adldap array
-     * 
-     * @param type $user
+     *
+     * @param $user
      */
     private function assign($user)
     {

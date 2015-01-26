@@ -52,7 +52,7 @@ class Corp
         /*
          * Create ComService object
          */
-        $this->com = new ComService($this);
+        $this->com = new ComService;
     }
 
     /**

@@ -6,13 +6,13 @@ class Computer {
     
     public $name = '';
     
-    public $os = '';
+    public $os;
     
     public $type = '';
     
     public $group = '';
     
-    public $dn = '';
+    public $dn = array();
     
     public $host_name = '';
     
