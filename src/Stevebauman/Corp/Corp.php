@@ -58,7 +58,7 @@ class Corp
     /**
      * Returns current adLDAP object
      *
-     * @return adLDAP/adLDAP
+     * @return adLDAP
      */
     public function adldap()
     {
@@ -90,8 +90,8 @@ class Corp
     /**
      * Returns a user object from an aldap array with the specified username
      *
-     * @param string $username
-     * @return \Stevebauman\Corp\Objects\User
+     * @param $username
+     * @return bool|User
      */
     public function user($username)
     {
@@ -107,7 +107,7 @@ class Corp
     /**
      * Returns a filtered collection of user objects
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function users()
     {
@@ -126,13 +126,11 @@ class Corp
         return new Collection(array_filter($users, array($this, 'filterUser')));
     }
 
-
     /**
      * Returns a computer object from an adldap array with the specified
-     * computer name
      *
-     * @param  string $name
-     * @return \Stevebauman\Corp\Objects\Computer
+     * @param $name
+     * @return Computer
      */
     public function computer($name)
     {
@@ -144,7 +142,7 @@ class Corp
     /**
      * Returns a collection of computer objects
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function computers()
     {
@@ -179,8 +177,8 @@ class Corp
      * Searches through an array of printers, if the name specified
      * equals the name of the printer, it is returned
      *
-     * @param string $name
-     * @return \Stevebauman\Corp\Objects\Printer
+     * @param $name
+     * @return bool|mixed
      */
     public function printer($name)
     {
@@ -198,7 +196,7 @@ class Corp
     /**
      * Returns a collection of printer objects
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function printers()
     {
@@ -232,7 +230,7 @@ class Corp
      * Returns an AdLDAP folder listing
      *
      * @param $folder
-     * @return mixed
+     * @return array
      */
     public function folder($folder)
     {
@@ -242,10 +240,10 @@ class Corp
     /**
      * Filters the specified user against the excluded user types and groups
      *
-     * @param $user
-     * @return mixed
+     * @param User $user
+     * @return bool|User
      */
-    private function filterUser($user)
+    private function filterUser(User $user)
     {
         if (!in_array($user->type, $this->getExcludedUserTypes()) || !in_array($user->group, $this->getExcludedUserGroups())) {
 
