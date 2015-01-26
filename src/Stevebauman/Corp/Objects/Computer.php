@@ -2,8 +2,6 @@
 
 namespace Stevebauman\Corp\Objects;
 
-use Stevebauman\Corp\Objects\ComputerOs;
-
 class Computer {
     
     public $name = '';

@@ -2,8 +2,6 @@
 
 namespace Stevebauman\Corp\Services;
 
-use Stevebauman\Corp\Services\UserComService;
-
 class ComService {
     
     /*
