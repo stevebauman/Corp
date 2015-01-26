@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Stevebauman\Corp;
 
@@ -10,236 +10,306 @@ use Stevebauman\Corp\Services\ComService;
 use Illuminate\Support\Collection;
 use Illuminate\Config\Repository;
 
-class Corp {
-	
-        /*
-         * Holds current ADLdap object
-         */
-	protected $adldap;
-        
-        /*
-         * Holds laravels config
-         */
-	private $config;
-	
-        /*
-         * Holds COM object if COM is enabled
-         */
-        private $com;
+/**
+ * Class Corp
+ * @package Stevebauman\Corp
+ */
+class Corp
+{
 
-	public function __construct(Repository $config){
-            
-            /*
-             * Create Config object
-             */
-            $this->config = $config;
-            
-            /*
-             * Create AdLDAP object
-             */
-            $this->adldap = new adLDAP($this->config->get('corp::adldap_config'));
-            
-            
-            /*
-             * Create ComService object
-             */
-            $this->com = new ComService($this);
-	}
-	
-	/**
-	 * Authenticates a user through adLDAP for accessing logged in functions. 
-	 * Returns true if login is correct.
-	 *
-	 * @param  string $username, $password
-	 * @return boolean
-	 */
-	public function auth($username, $password)
-        {
-            return $this->adldap->user()->authenticate($username, $password);
-	}
-        
-        /**
-         * Returns a user object from an aldap array with the specified username
-         * 
-         * @param type $username
-         * @return \Stevebauman\Corp\Objects\User
-         */
-        public function user($username){
-            $user = $this->adldap->user()->info($username);
-            
-            if($user) {
-                return new User($user);
-            } else {
-                return false;
-            }
-        }
-        
-        /**
-         * Returns a collection of user objects
-         * 
-         * @return \Illuminate\Support\Collection
-         */
-        public function users()
-        {
-            $adldapUsers = $this->adldap->user()->all();
-            
-            $users = array();
-            
-            // Excluded user types
-            $excluded_types = $this->config->get('corp::options.users.excluded_user_types');
+    /*
+     * Holds current ADLdap object
+     */
+    protected $adldap;
 
-            // Excluded user groups
-            $excluded_groups = $this->config->get('corp::options.users.excluded_user_groups');
-            
-            foreach($adldapUsers as $username){
-                
-                $user = new User($this->adldap->user()->info($username));
-                
-                if(!in_array($user->type, $excluded_types) && !in_array($user->group, $excluded_groups)){
-                    $users[] = $user; 
-                }
-                
-            }
-            
-            return new Collection($users);
-        }
-	
+    /*
+     * Holds laravels config
+     */
+    private $config;
 
-	/**
-	 * Returns a computer object from an adldap array with the specified
-         * computer name
-	 *
-	 * @param  string  $name
-	 * @return \Stevebauman\Corp\Objects\Computer
-	 */
-	public function computer($name)
-        {
-            $computer = new Computer($this->adldap->computer()->info($name));
-            
-            return $computer;
-	}
-        
-        /**
-         * Returns a collection of computer objects
-         * 
-         * @return \Illuminate\Support\Collection
+    /*
+     * Holds COM object if COM is enabled
+     */
+    private $com;
+
+    /**
+     * @param Repository $config
+     */
+    public function __construct(Repository $config)
+    {
+
+        /*
+         * Create Config object
          */
-        public function computers()
-        {
-            $folders = $this->folder($this->config->get('corp::options.computers.folder'));
-            
-            $computers = array();
-            
-            foreach($folders as $computer)
-            {
-                if(is_array($computer))
-                {
-                    
-                    if(array_key_exists('objectclass', $computer))
-                    {
-                        /*
-                         * The object class array inside the computer array will
-                         * contain the key '4' if it is a computer
-                         */
-                        if(array_key_exists(4, $computer['objectclass']))
-                        {
-                            $dn = ldap_explode_dn($computer['distinguishedname'][0], 2);
-                            
-                            $computers[] = $this->computer($dn[0]);
-                            
-                        }
-                        
-                    }
-                    
-                }
-            }
-            
-            return new Collection($computers);
-        }
-        
-        /**
-         * Searches through an array of printers, if the name specified
-         * equals the name of the printer, it is returned
-         * 
-         * @param type $name
-         * @return \Stevebauman\Corp\Objects\Printer
+        $this->config = $config;
+
+        /*
+         * Create AdLDAP object
          */
-        public function printer($name)
-        {
-            $printers = $this->printers();
-            
-            foreach($printers as $printer)
-            {
-                if($printer->name === $name)
-                {
-                    return $printer;
-                }
-            }
-            
+        $this->adldap = new adLDAP($this->getAdldapConfig());
+
+
+        /*
+         * Create ComService object
+         */
+        $this->com = new ComService($this);
+    }
+
+    /**
+     * Returns current adLDAP object
+     *
+     * @return adLDAP/adLDAP
+     */
+    public function adldap()
+    {
+        return $this->adldap;
+    }
+
+    /**
+     * Returns the current COM service instance
+     *
+     * @return ComService
+     */
+    public function com()
+    {
+        return $this->com;
+    }
+
+    /**
+     * Authenticates a user through adLDAP for accessing logged in functions.
+     * Returns true if login is correct.
+     *
+     * @param  string $username , $password
+     * @return boolean
+     */
+    public function auth($username, $password)
+    {
+        return $this->adldap()->user()->authenticate($username, $password);
+    }
+
+    /**
+     * Returns a user object from an aldap array with the specified username
+     *
+     * @param string $username
+     * @return \Stevebauman\Corp\Objects\User
+     */
+    public function user($username)
+    {
+        $user = $this->adldap()->user()->info($username);
+
+        if ($user) {
+            return new User($user);
+        } else {
             return false;
         }
-        
-        /**
-         * Returns a collection of printer objects
-         * 
-         * @return \Illuminate\Support\Collection
-         */
-        public function printers()
-        {
-            $folders = $this->folder($this->config->get('corp::options.computers.folder'));
-            
-            $printers = array();
-            
-            foreach($folders as $printer)
-            {
-                if(is_array($printer))
-                {
-                    
-                    if(array_key_exists('objectclass', $printer))
-                    {
-                        /*
-                         * The object class array inside the computer array will
-                         * contain the key '4' if it is a computer
-                         */
-                        if(array_key_exists(3, $printer['objectclass']))
-                        {
-                            if($printer['objectclass'][3] === 'printQueue'){
-                                $printers[] = new Printer($printer);
-                            }
-                        }
-                        
+    }
+
+    /**
+     * Returns a filtered collection of user objects
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function users()
+    {
+        $adldapUsers = $this->getAllUsers();
+
+        $users = array();
+
+        foreach ($adldapUsers as $username) {
+
+            $user = new User($this->adldap->user()->info($username));
+
+            $users[] = $user;
+
+        }
+
+        return new Collection(array_filter($users, array($this, 'filterUser')));
+    }
+
+
+    /**
+     * Returns a computer object from an adldap array with the specified
+     * computer name
+     *
+     * @param  string $name
+     * @return \Stevebauman\Corp\Objects\Computer
+     */
+    public function computer($name)
+    {
+        $computer = new Computer($this->adldap()->computer()->info($name));
+
+        return $computer;
+    }
+
+    /**
+     * Returns a collection of computer objects
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function computers()
+    {
+        $folders = $this->folder($this->getComputersFolder());
+
+        $computers = array();
+
+        foreach ($folders as $computer) {
+            if (is_array($computer)) {
+
+                if (array_key_exists('objectclass', $computer)) {
+                    /*
+                     * The object class array inside the computer array will
+                     * contain the key '4' if it is a computer
+                     */
+                    if (array_key_exists(4, $computer['objectclass'])) {
+                        $dn = ldap_explode_dn($computer['distinguishedname'][0], 2);
+
+                        $computers[] = $this->computer($dn[0]);
+
                     }
+
+                }
+
+            }
+        }
+
+        return new Collection($computers);
+    }
+
+    /**
+     * Searches through an array of printers, if the name specified
+     * equals the name of the printer, it is returned
+     *
+     * @param string $name
+     * @return \Stevebauman\Corp\Objects\Printer
+     */
+    public function printer($name)
+    {
+        $printers = $this->printers();
+
+        foreach ($printers as $printer) {
+            if ($printer->name === $name) {
+                return $printer;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns a collection of printer objects
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function printers()
+    {
+        $folders = $this->folder($this->getComputersFolder());
+
+        $printers = array();
+
+        foreach ($folders as $printer) {
+            if (is_array($printer)) {
+
+                if (array_key_exists('objectclass', $printer)) {
+                    /*
+                     * The object class array inside the computer array will
+                     * contain the key '4' if it is a computer
+                     */
+                    if (array_key_exists(3, $printer['objectclass'])) {
+                        if ($printer['objectclass'][3] === 'printQueue') {
+                            $printers[] = new Printer($printer);
+                        }
+                    }
+
                 }
             }
-            
-            return new Collection($printers);
-            
         }
-        
-        /**
-         * Returns an AdLDAP folder listing
-         * 
-         * @param type $folder
-         * @return type
-         */
-        public function folder($folder)
-        {
-            return $this->adldap->folder()->listing($folder, adLDAP::ADLDAP_FOLDER, true);
+
+        return new Collection($printers);
+
+    }
+
+    /**
+     * Returns an AdLDAP folder listing
+     *
+     * @param $folder
+     * @return mixed
+     */
+    public function folder($folder)
+    {
+        return $this->adldap()->folder()->listing($folder, adLDAP::ADLDAP_FOLDER, true);
+    }
+
+    /**
+     * Filters the specified user against the excluded user types and groups
+     *
+     * @param $user
+     * @return mixed
+     */
+    private function filterUser($user)
+    {
+        if (!in_array($user->type, $this->getExcludedUserTypes()) || !in_array($user->group, $this->getExcludedUserGroups())) {
+
+            return $user;
+
         }
-        
-        /**
-         * Returns current adLDAP object
-         * 
-         * @return adLDAP/adLDAP
-         */
-        public function adldap()
-        {
-            return $this->adldap;
-        }
-        
-        public function com()
-        {
-            return $this->com;
-        }
+
+        return false;
+    }
+
+    /**
+     * Returns all users from adldap
+     *
+     * @return array
+     */
+    private function getAllUsers()
+    {
+        return $this->adldap()->user()->all();
+    }
+
+    /**
+     * Returns adldap configuration from the config file
+     *
+     * @return mixed
+     */
+    private function getAdldapConfig()
+    {
+        return $this->config->get('corp::adldap_config');
+    }
+
+    /**
+     * Returns the excluded user groups in the config file
+     *
+     * @return array
+     */
+    private function getExcludedUserGroups()
+    {
+        $groups = $this->config->get('corp::options.users.excluded_user_groups');
+
+        return (is_array($groups) ? $groups : array());
+
+    }
+
+    /**
+     * Returns the excluded user types in the config file
+     *
+     * @return array
+     */
+    private function getExcludedUserTypes()
+    {
+        $types = $this->config->get('corp::options.users.excluded_user_types');
+
+        return (is_array($types) ? $types : array());
+    }
+
+    /**
+     * Returns the computers folder in the config file
+     *
+     * @return mixed
+     */
+    private function getComputersFolder()
+    {
+        return $this->config->get('corp::options.computers.folder');
+    }
+
 }
 
