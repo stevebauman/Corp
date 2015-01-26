@@ -7,33 +7,48 @@ use Illuminate\Support\Facades\Config;
 use Stevebauman\Corp\Facades\Corp;
 
 class UserComService {
-    
-    /*
+
+    /**
      * Holds the COM object
+     *
+     * @var COM
      */
     private $com;
-    
-    /*
+
+    /**
      * Holds the server name
+     *
+     * @var string
      */
     private $server = '';
-    
-    /*
+
+    /**
      * Holds the administrator username
+     *
+     * @var string
      */
     private $adminUser = '';
-    
-    /*
+
+    /**
      * Holds the administrator password
+     *
+     * @var string
      */
     private $adminPassword = '';
-    
+
+    /**
+     * Holds the COM's constructor LDAP parameter
+     *
+     * @var string
+     */
+    private $ldapComCommand = 'LDAP:';
+
     public function __construct()
     {   
         /*
          * Construct a new COM object
          */
-        $this->com = new COM("LDAP:");
+        $this->com = new COM($this->ldapComCommand);
 
         /*
          * Get configuration details
@@ -74,13 +89,12 @@ class UserComService {
         return true;
         
     }
-    
+
     /**
      * Activates an LDAP account using COM
-     * 
-     * @param string $username
-     * @param string $password
-     * @return boolean
+     *
+     * @param $username
+     * @return bool
      */
     public function activate($username)
     {
@@ -106,22 +120,21 @@ class UserComService {
         
         return true;
     }
-    
+
     /**
      * Returns a COM object using the specified user distinguished name
-     * 
-     * @param string $userDn
-     * @return variant COM Object
+     *
+     * @param $userDn
+     * @return mixed
      */
     private function getDsObject($userDn)
     {
         return $this->com->OpenDSObject("LDAP://".$this->server."/".$userDn, $this->adminUser, $this->adminPassword, 1);
     }
-    
+
     /**
-     * 
      * @param string $username
-     * @return type 
+     * @return mixed
      */
     private function getUser($username)
     {

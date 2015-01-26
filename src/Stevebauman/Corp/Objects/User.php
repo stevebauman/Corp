@@ -31,7 +31,7 @@ class User {
         
         $this->service = new UserComService;
     }
-    
+
     /**
      * Assigns object variables from adldap array
      *
