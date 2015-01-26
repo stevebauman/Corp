@@ -10,8 +10,8 @@
     "license": "MIT",
     "repositories": [
         {
-            "type": "git",
-            "url": "https://github.com/adldap/adLDAP.git"
+            "type": "vcs",
+            "url": "https://github.com/adldap/adLDAP"
         }
     ],
     "require": {
