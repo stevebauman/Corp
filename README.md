@@ -13,7 +13,7 @@ An AdLDAP Helper Package for Larvel 4/5
 ##Installation
 Add Corp to your `composer.json` file.
 
-	"stevebauman/corp": "1.*"
+	"stevebauman/corp": "1.0.*"
 
 Then run "composer update" on your project source.
 
