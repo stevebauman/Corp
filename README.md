@@ -11,21 +11,22 @@
 An AdLDAP Helper Package for Larvel 4/5
 
 ##Installation
-Add Corp to your `composer.json` file.
+
+Add Corp to your `composer.json` file:
 
 	"stevebauman/corp": "1.0.*"
 
 Then run "composer update" on your project source.
 
-Add the service provider in "app/config/app.php"
+Add the service provider in "app/config/app.php":
 
 	'Stevebauman\Corp\CorpServiceProvider',
 	
-Add the alias
+Add the alias:
 
-	'Corp'		=> 'Stevebauman\Corp\Facades\Corp',
+	'Corp' => 'Stevebauman\Corp\Facades\Corp',
 	
-Publish the config file
+Publish the config file:
 
 	php artisan config:publish stevebauman/corp
 	
@@ -46,20 +47,20 @@ Example:
 
 All functions available [here](https://github.com/adldap/adLDAP/wiki/adLDAP-Developer-API-Reference#functions).
 
-####Change User Password through standard AdLDAP (SSL or TLS required, must enable in package config file)
+#####Change User Password through standard AdLDAP (SSL or TLS required, must enable in package config file)
     Corp::adldap()->user()->password('username', 'password123');
 
-####Change User Password through COM (Windows and COM ext required)
+#####Change User Password through COM (Windows and COM ext required)
     Corp::com()->user()->password('username', 'password123'); //Returns boolean
 
-####Activate a User through COM
+#####Activate a User through COM
     Corp::com()->user()->activate('username'); //Returns boolean
 
-####Authenticate an LDAP User
+#####Authenticate an LDAP User
 
     Corp::auth('username', 'password'); // Returns true/false (boolean)
 
-####Get user information
+#####Get user information
 
     $user = Corp::user('username'); // Returns a user object
 
@@ -75,14 +76,14 @@ All functions available [here](https://github.com/adldap/adLDAP/wiki/adLDAP-Deve
 
     print_r($user->dn); // Returns distinguished name array
 
-####Get an entire user list
+#####Get an entire user list
 
     $users = Corp::users(); // Returns a laravel collection of user objects of all users on current ldap connection
 
     //Usage for laravel select
     Form::select('users', $users->lists('username', 'name'));
 
-####Get a computer's information
+#####Get a computer's information
 
     $computer = Corp::computer('computer name'); // Returns a computer object
 
@@ -101,21 +102,21 @@ All functions available [here](https://github.com/adldap/adLDAP/wiki/adLDAP-Deve
     print_r($computer->dn);
 	
 	
-####Get a list of all computers
+#####Get a list of all computers
 	
     $computers = Corp::computers();
 
     //Usage for laravel select
     Form::select('computers', $computers->lists('name', 'name'));
 
-####Get a list of printers
+#####Get a list of printers
 
     $printers = Corp::printers();
 
     //Usage for laravel select
     Form::select('printers', $printers->lists('name', 'name'));
 
-####Authenticating with laravel's Auth driver but using LDAP
+#####Authenticating with laravel's Auth driver but using LDAP
 
     if (Corp::auth($username, $password)) { //If Passes LDAP Auth
 
