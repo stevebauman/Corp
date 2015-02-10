@@ -206,11 +206,10 @@ class Corp
 
         foreach ($folders as $printer) {
             if (is_array($printer)) {
-
                 if (array_key_exists('objectclass', $printer)) {
                     /*
                      * The object class array inside the computer array will
-                     * contain the key '4' if it is a computer
+                     * contain the key '3' if it is a printer
                      */
                     if (array_key_exists(3, $printer['objectclass'])) {
                         if ($printer['objectclass'][3] === 'printQueue') {
