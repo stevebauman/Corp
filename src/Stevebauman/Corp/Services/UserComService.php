@@ -48,7 +48,10 @@ class UserComService {
         /*
          * Construct a new COM object
          */
-        $this->com = new COM($this->ldapComCommand);
+        if (class_exists('COM'))
+        {
+            $this->com = new COM($this->ldapComCommand);
+        }
 
         /*
          * Get configuration details
