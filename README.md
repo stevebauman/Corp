@@ -32,7 +32,7 @@ Publish the config file:
 	
 ##Usage
 
-####Accessing AdLDAP object
+#####Accessing AdLDAP object
 
 You can access all adldap functions by using:
 
