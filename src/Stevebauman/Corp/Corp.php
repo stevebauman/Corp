@@ -35,7 +35,6 @@ class Corp
      */
     public function __construct(Repository $config)
     {
-
         /*
          * Create Config object
          */
@@ -263,7 +262,7 @@ class Corp
      */
     private function getAdldapConfig()
     {
-        return $this->config->get('corp::adldap_config');
+        return $this->config->get('corp'.CorpServiceProvider::$configSeparator.'adldap_config');
     }
 
     /**
@@ -273,7 +272,7 @@ class Corp
      */
     private function getExcludedUserGroups()
     {
-        $groups = $this->config->get('corp::options.users.excluded_user_groups');
+        $groups = $this->config->get('corp'.CorpServiceProvider::$configSeparator.'options.users.excluded_user_groups');
 
         return (is_array($groups) ? $groups : []);
     }
@@ -285,7 +284,7 @@ class Corp
      */
     private function getExcludedUserTypes()
     {
-        $types = $this->config->get('corp::options.users.excluded_user_types');
+        $types = $this->config->get('corp'.CorpServiceProvider::$configSeparator.'options.users.excluded_user_types');
 
         return (is_array($types) ? $types : []);
     }
@@ -297,6 +296,6 @@ class Corp
      */
     private function getComputersFolder()
     {
-        return $this->config->get('corp::options.computers.folder');
+        return $this->config->get('corp'.CorpServiceProvider::$configSeparator.'options.computers.folder');
     }
 }

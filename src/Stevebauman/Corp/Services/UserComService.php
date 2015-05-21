@@ -4,6 +4,7 @@ namespace Stevebauman\Corp\Services;
 
 use COM;
 use Illuminate\Support\Facades\Config;
+use Stevebauman\Corp\CorpServiceProvider;
 use Stevebauman\Corp\Facades\Corp;
 
 class UserComService
@@ -43,6 +44,9 @@ class UserComService
      */
     private $ldapComCommand = 'LDAP:';
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         /*
@@ -50,14 +54,11 @@ class UserComService
          */
         if (class_exists('COM')) {
             $this->com = new COM($this->ldapComCommand);
-        }
 
-        /*
-         * Get configuration details
-         */
-        $this->server = Config::get('corp::adldap_config.domain_controllers.0');
-        $this->adminUser = Config::get('corp::adldap_config.admin_username');
-        $this->adminPassword = Config::get('corp::adldap_config.admin_password');
+            $this->server = Config::get('corp'.CorpServiceProvider::$configSeparator.'adldap_config.domain_controllers.0');
+            $this->adminUser = Config::get('corp'.CorpServiceProvider::$configSeparator.'adldap_config.admin_username');
+            $this->adminPassword = Config::get('corp'.CorpServiceProvider::$configSeparator.'adldap_config.admin_password');
+        }
     }
 
     /**
