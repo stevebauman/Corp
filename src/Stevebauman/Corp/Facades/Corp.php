@@ -1,7 +1,13 @@
-<?php namespace Stevebauman\Corp\Facades;
+<?php
+
+namespace Stevebauman\Corp\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Corp extends Facade {
-    protected static function getFacadeAccessor() { return 'corp'; }
+class Corp extends Facade
+{
+    protected static function getFacadeAccessor()
+    {
+        return 'corp';
+    }
 }

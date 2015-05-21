@@ -11,12 +11,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Config\Repository;
 
 /**
- * Class Corp
- * @package Stevebauman\Corp
+ * Class Corp.
  */
 class Corp
 {
-
     /*
      * Holds current ADLdap object
      */
@@ -48,15 +46,14 @@ class Corp
          */
         $this->adldap = new adLDAP($this->getAdldapConfig());
 
-
         /*
          * Create ComService object
          */
-        $this->com = new ComService;
+        $this->com = new ComService();
     }
 
     /**
-     * Returns current adLDAP object
+     * Returns current adLDAP object.
      *
      * @return adLDAP
      */
@@ -66,7 +63,7 @@ class Corp
     }
 
     /**
-     * Returns the current COM service instance
+     * Returns the current COM service instance.
      *
      * @return ComService
      */
@@ -79,8 +76,9 @@ class Corp
      * Authenticates a user through adLDAP for accessing logged in functions.
      * Returns true if login is correct.
      *
-     * @param  string $username , $password
-     * @return boolean
+     * @param string $username , $password
+     *
+     * @return bool
      */
     public function auth($username, $password)
     {
@@ -88,9 +86,10 @@ class Corp
     }
 
     /**
-     * Returns a user object from an aldap array with the specified username
+     * Returns a user object from an aldap array with the specified username.
      *
      * @param $username
+     *
      * @return bool|User
      */
     public function user($username)
@@ -105,7 +104,7 @@ class Corp
     }
 
     /**
-     * Returns a filtered collection of user objects
+     * Returns a filtered collection of user objects.
      *
      * @return Collection
      */
@@ -113,23 +112,22 @@ class Corp
     {
         $adldapUsers = $this->getAllUsers();
 
-        $users = array();
+        $users = [];
 
         foreach ($adldapUsers as $username) {
-
             $user = new User($this->adldap->user()->info($username));
 
             $users[] = $user;
-
         }
 
-        return new Collection(array_filter($users, array($this, 'filterUser')));
+        return new Collection(array_filter($users, [$this, 'filterUser']));
     }
 
     /**
-     * Returns a computer object from an adldap array with the specified
+     * Returns a computer object from an adldap array with the specified.
      *
      * @param $name
+     *
      * @return Computer
      */
     public function computer($name)
@@ -140,7 +138,7 @@ class Corp
     }
 
     /**
-     * Returns a collection of computer objects
+     * Returns a collection of computer objects.
      *
      * @return Collection
      */
@@ -148,11 +146,10 @@ class Corp
     {
         $folders = $this->folder($this->getComputersFolder());
 
-        $computers = array();
+        $computers = [];
 
         foreach ($folders as $computer) {
             if (is_array($computer)) {
-
                 if (array_key_exists('objectclass', $computer)) {
                     /*
                      * The object class array inside the computer array will
@@ -162,11 +159,8 @@ class Corp
                         $dn = ldap_explode_dn($computer['distinguishedname'][0], 2);
 
                         $computers[] = $this->computer($dn[0]);
-
                     }
-
                 }
-
             }
         }
 
@@ -175,9 +169,10 @@ class Corp
 
     /**
      * Searches through an array of printers, if the name specified
-     * equals the name of the printer, it is returned
+     * equals the name of the printer, it is returned.
      *
      * @param $name
+     *
      * @return bool|mixed
      */
     public function printer($name)
@@ -194,7 +189,7 @@ class Corp
     }
 
     /**
-     * Returns a collection of printer objects
+     * Returns a collection of printer objects.
      *
      * @return Collection
      */
@@ -202,7 +197,7 @@ class Corp
     {
         $folders = $this->folder($this->getComputersFolder());
 
-        $printers = array();
+        $printers = [];
 
         foreach ($folders as $printer) {
             if (is_array($printer)) {
@@ -216,19 +211,18 @@ class Corp
                             $printers[] = new Printer($printer);
                         }
                     }
-
                 }
             }
         }
 
         return new Collection($printers);
-
     }
 
     /**
-     * Returns an AdLDAP folder listing
+     * Returns an AdLDAP folder listing.
      *
      * @param $folder
+     *
      * @return array
      */
     public function folder($folder)
@@ -237,24 +231,23 @@ class Corp
     }
 
     /**
-     * Filters the specified user against the excluded user types and groups
+     * Filters the specified user against the excluded user types and groups.
      *
      * @param User $user
+     *
      * @return bool|User
      */
     private function filterUser(User $user)
     {
         if (!in_array($user->type, $this->getExcludedUserTypes()) || !in_array($user->group, $this->getExcludedUserGroups())) {
-
             return $user;
-
         }
 
         return false;
     }
 
     /**
-     * Returns all users from adldap
+     * Returns all users from adldap.
      *
      * @return array
      */
@@ -264,7 +257,7 @@ class Corp
     }
 
     /**
-     * Returns adldap configuration from the config file
+     * Returns adldap configuration from the config file.
      *
      * @return mixed
      */
@@ -274,7 +267,7 @@ class Corp
     }
 
     /**
-     * Returns the excluded user groups in the config file
+     * Returns the excluded user groups in the config file.
      *
      * @return array
      */
@@ -282,12 +275,11 @@ class Corp
     {
         $groups = $this->config->get('corp::options.users.excluded_user_groups');
 
-        return (is_array($groups) ? $groups : array());
-
+        return (is_array($groups) ? $groups : []);
     }
 
     /**
-     * Returns the excluded user types in the config file
+     * Returns the excluded user types in the config file.
      *
      * @return array
      */
@@ -295,11 +287,11 @@ class Corp
     {
         $types = $this->config->get('corp::options.users.excluded_user_types');
 
-        return (is_array($types) ? $types : array());
+        return (is_array($types) ? $types : []);
     }
 
     /**
-     * Returns the computers folder in the config file
+     * Returns the computers folder in the config file.
      *
      * @return mixed
      */
@@ -307,6 +299,4 @@ class Corp
     {
         return $this->config->get('corp::options.computers.folder');
     }
-
 }
-
