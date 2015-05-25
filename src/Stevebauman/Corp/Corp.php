@@ -41,11 +41,6 @@ class Corp
         $this->config = $config;
 
         /*
-         * Create AdLDAP object
-         */
-        $this->adldap = new adLDAP($this->getAdldapConfig());
-
-        /*
          * Create ComService object
          */
         $this->com = new ComService();
@@ -58,6 +53,10 @@ class Corp
      */
     public function adldap()
     {
+        if(!$this->adldap instanceof adLDAP) {
+            $this->adldap = new adLDAP($this->getAdldapConfig());
+        }
+
         return $this->adldap;
     }
 
