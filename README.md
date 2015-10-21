@@ -10,6 +10,10 @@
 
 An AdLDAP Helper Package for Larvel 4/5
 
+## Attention
+
+This package is no longer in development. Please move over to [Adldap-Laravel](https://github.com/Adldap2/Adldap2-laravel) which contains more functionality and flexibility.
+
 ##Installation
 
 Add Corp to your `composer.json` file:
